@@ -4,41 +4,66 @@ from termcolor import colored
 import pyfiglet
 import sys
 
-list_of_tools = []
 
-def file_check():
+def apt_get_file_check():
     try:
-        print(colored("\nReading File ...","green"))
-        with open('Tools_list.txt', 'r') as file:
+        print(colored("\nReading File apt_get_list.txt...","green"))
+        apt_get_tool_list = []
+        with open('apt_get_list.txt', 'r') as file:
             size = os.path.getsize('Tools_list.txt')
             if( size > 0):
                 print(colored("\nChecking Status ... \n","green"))
                 for line in file:
-                    list_of_tools.append(line.strip())
+                    apt_get_tool_list.append(line.strip())
+            else:
+                sys.exit(1)              
+    except:
+        print(colored("\nError opening apt_get_list.txt or file may be empty !!","red"))
+        sys.exit(1)
+    return apt_get_tool_list
+
+
+def git_clone_file_check():
+    try:
+        print(colored("\nReading File ...","green"))
+        git_clone_tool_list = []
+        with open('git_clone_list.txt', 'r') as file:
+            size = os.path.getsize('Tools_list.txt')
+            if( size > 0):
+                print(colored("\nChecking Status ... \n","green"))
+                for line in file:
+                    git_clone_tool_list.append(line.strip())
             else:
                 sys.exit(1)                
     except:
-        print(colored("\nError opening Tools_list.txt or file may be empty !!","red"))
+        print(colored("\nError opening git_clone_list.txt or file may be empty !!","red"))
         sys.exit(1)
-        
 
-def install_tools(tool_name):
-    try:
-        cmd = ["sudo","apt-get","install",tool_name]
-        result = subprocess.call(cmd)
-        res_new = subprocess.call(["which", tool_name])
-        if (res_new == 0):
-            print("WOWOWOWOWOWOWO")
-        else:
-            print("NOOOOOOOOOOOOOOOOs")
-        print("\n")
+    return git_clone_tool_list
 
 
+def apt_get_tool_check():
+    result = subprocess.call(['which', "nameoftool"], stdout=subprocess.DEVNULL)
+    print("CHECK")
+    #call apt_get_tool_install function
 
 
-    except:
-        print("Error")
-    
+def git_clone_tool_check():
+    print("CHECK")
+
+
+
+def apt_get_tool_install():
+    #install here
+    print("INSTALL")
+
+
+def git_clone_tool_install():
+    print("INSTALL")
+
+
+
+
 print("---------------------------------------------------------------------------------")
 banner = pyfiglet.figlet_format("Tool Checklist :-)")
 print(colored(banner, "green"))
@@ -58,14 +83,10 @@ while True:
         else:
             if (user_in == '1'):
                 try:
-                    file_check()
-                    for i in list_of_tools:
-                        result = subprocess.call(['which', i], stdout=subprocess.DEVNULL)
-                        if (result == 0):
-                            print(i + " : " + colored("Installed","green") + "\n")
-                        else:
-                            print(i + " : " + colored("Not Installed","red"))
-                            install_tools(i)
+                    apt_get_list = apt_get_file_check()
+                    git_clone_list = git_clone_file_check()
+                    print(apt_get_list)
+                    print(git_clone_list)
                 except:
                     print("\nError in checking status!!\n")
 
