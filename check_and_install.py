@@ -144,17 +144,17 @@ while True:
                         git_clone_tool_check(git_clone_list)
                         
                     else:
-                        print("\nFile Empty")
+                        print(colored("\nFile Empty","red"))
                         sys.exit(1)
                 except:
-                    print("\nError in checking status!!\n")
+                    print("\nError in checking status!!")
 
             elif (user_in == '2'):
-                print("Exiting ... ")
+                print(colored("\nExiting ...\n","red"))
                 break
 
             else:
-                print("Unknown number. Exiting program ...")
+                print(colored("\nUnknown number. Exiting program ...\n","red"))
                 break
     except:
         sys.exit(1)
