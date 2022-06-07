@@ -1,18 +1,20 @@
 import os
+from queue import Empty
 import subprocess
+from unittest import result
 from termcolor import colored
 import pyfiglet
 import sys
 
 
 def apt_get_file_check():
+    apt_get_tool_list = []
     try:
         print(colored("\nReading File apt_get_list.txt...","green"))
-        apt_get_tool_list = []
         with open('apt_get_list.txt', 'r') as file:
-            size = os.path.getsize('Tools_list.txt')
+            size = os.path.getsize('apt_get_list.txt')
             if( size > 0):
-                print(colored("\nChecking Status ... \n","green"))
+                #print(colored("\nChecking Status ... \n","green"))
                 for line in file:
                     apt_get_tool_list.append(line.strip())
             else:
@@ -24,15 +26,16 @@ def apt_get_file_check():
 
 
 def git_clone_file_check():
+    git_clone_tool_list = []
     try:
-        print(colored("\nReading File ...","green"))
-        git_clone_tool_list = []
+        print(colored("\nReading File git_clone_list.txt...","green"))
         with open('git_clone_list.txt', 'r') as file:
-            size = os.path.getsize('Tools_list.txt')
+            size = os.path.getsize('git_clone_list.txt')
             if( size > 0):
-                print(colored("\nChecking Status ... \n","green"))
+                #print(colored("\nChecking Status ... \n","green"))
                 for line in file:
-                    git_clone_tool_list.append(line.strip())
+                    new_list = line.split(",")
+                    git_clone_tool_list.append(new_list)
             else:
                 sys.exit(1)                
     except:
@@ -42,24 +45,70 @@ def git_clone_file_check():
     return git_clone_tool_list
 
 
-def apt_get_tool_check():
-    result = subprocess.call(['which', "nameoftool"], stdout=subprocess.DEVNULL)
-    print("CHECK")
-    #call apt_get_tool_install function
+def apt_get_tool_check(tool_name):
+    try:
+        for i in tool_name:
+            result = subprocess.call(['which', i], stdout=subprocess.DEVNULL)
+            if(result == 0):
+                print(colored("\n[+] ","green") + i + " : " + colored("Installed\n", "green"))
+            else:
+                print(colored("\n[+] ","red") + i + " : " + colored("Not Installed\n", "red"))
+                apt_get_tool_install(i)
+    except:
+        print("Error Checking status of tools")
 
 
-def git_clone_tool_check():
-    print("CHECK")
+def git_clone_tool_check(tool_name):
+    try:
+        general_list = []
+        for i in tool_name:
+            cmd_to_locate = i[0].strip()
+            #print(cmd_to_locate)
+            cmd = ["locate", cmd_to_locate]
+            result = subprocess.check_output(cmd)
+            result_decode = result.decode()
+            if result_decode != '':
+                print(f"{cmd_to_locate} : Found")
+                print(f"Location : {result_decode}\n")
+            else:
+                print(f"{cmd_to_locate} : Not Found\n")
+                #git_clone_tool_install(i)
+    except:
+        print("Error in checking files ...")
 
 
+def apt_get_tool_install(tool):
+    try:
+        print(f"Trying to install {tool} ...")
+        subprocess.run(["sudo","apt-get", "-y", "install", tool])
+        result = subprocess.call(["which", tool], stdout=subprocess.DEVNULL)
+        if(result == 0):
+            print(f"{tool} : Installed Successfully")
+        else:
+            print(f"{tool} : Not Installed. Try checking the command")
+    except:
+        print(f"Error Installing {tool}")
 
-def apt_get_tool_install():
-    #install here
-    print("INSTALL")
 
+def git_clone_tool_install(tool):
+    try:
+        print(f"Downloading : {tool[0]} \n")
+        link = tool[1].strip()
+        print(link)
+        subprocess.run(["git", "clone", link])
+        subprocess.run(["sudo", "updatedb"])
+        cmd = ["locate", tool[0]]
+        result = subprocess.check_output(cmd)
+        result_decode = result.decode()
+        if result_decode != '':
+            print(f"{tool[0]} : Download Successful")
+            print(f"Location : {result_decode}\n")
+        else:
+            print(f"{tool[0]} : Download not successful. Check link and try again\n")    
 
-def git_clone_tool_install():
-    print("INSTALL")
+    except:
+        print(f"Error downloading {tool[0]}")
+
 
 
 
@@ -85,8 +134,15 @@ while True:
                 try:
                     apt_get_list = apt_get_file_check()
                     git_clone_list = git_clone_file_check()
-                    print(apt_get_list)
-                    print(git_clone_list)
+                    print("Both File exists.")
+                    print("Checking status and installing ...\n")
+                    if((apt_get_list and git_clone_list) != ''):
+                        apt_get_tool_check(apt_get_list)
+                        git_clone_tool_check(git_clone_list)
+                        
+                    else:
+                        print("\nFile Empty")
+                        sys.exit(1)
                 except:
                     print("\nError in checking status!!\n")
 

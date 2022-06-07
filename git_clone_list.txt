@@ -1,15 +1,4 @@
-wget
-whatweb
-ghosteye
-billcipher
-whois
-dig
-traceroute
-nmap
-shelter
-john the ripper
-curl
-gdb
-burpsuite
-Linpeas
-Lin4enum
+ghost_eye.py, https://github.com/BullsEye0/ghost_eye.git
+billcipher.py, https://github.com/bahatiphill/BillCipher.git
+linpeas.sh, https://github.com/grubbychicken/LinPEAS.git
+LinEnum.sh, https://github.com/rebootuser/LinEnum.git
