@@ -1,1 +1,15 @@
-hello
+wget
+whatweb
+ghosteye
+billcipher
+whois
+dig
+traceroute
+nmap
+shelter
+john the ripper
+curl
+gdb
+burpsuite
+Linpeas
+Lin4enum
