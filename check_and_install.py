@@ -50,12 +50,12 @@ def apt_get_tool_check(tool_name):
         for i in tool_name:
             result = subprocess.call(['which', i], stdout=subprocess.DEVNULL)
             if(result == 0):
-                print(colored("\n[+] ","green") + i + " : " + colored("Installed\n", "green"))
+                print(colored("\n[+] ","green") + i + " : " + colored("Installed", "green"))
             else:
-                print(colored("\n[+] ","red") + i + " : " + colored("Not Installed\n", "red"))
+                print(colored("\n[+] ","red") + i + " : " + colored("Not Installed", "red"))
                 apt_get_tool_install(i)
     except:
-        print("Error Checking status of tools")
+        print(colored("\nError Checking status of tools","red"))
 
 
 def git_clone_tool_check(tool_name):
@@ -68,31 +68,31 @@ def git_clone_tool_check(tool_name):
             result = subprocess.check_output(cmd)
             result_decode = result.decode()
             if result_decode != '':
-                print(f"{cmd_to_locate} : Found")
-                print(f"Location : {result_decode}\n")
+                print(colored("\n[+] ","green") + cmd_to_locate + " : " + colored("Found", "green"))
+                print(colored("[+] ","blue") + "Location" + " : " + colored(f"{result_decode}"))
             else:
-                print(f"{cmd_to_locate} : Not Found\n")
+                print(colored(f"\n{cmd_to_locate} : Not Found", "red"))
                 #git_clone_tool_install(i)
     except:
-        print("Error in checking files ...")
+        print(colored("\nError in checking files ...","red"))
 
 
 def apt_get_tool_install(tool):
     try:
-        print(f"Trying to install {tool} ...")
+        print(colored(f"\nTrying to install {tool} ...","green"))
         subprocess.run(["sudo","apt-get", "-y", "install", tool])
         result = subprocess.call(["which", tool], stdout=subprocess.DEVNULL)
         if(result == 0):
-            print(f"{tool} : Installed Successfully")
+            print(colored(f"\n{tool} : Installed Successfully","green"))
         else:
-            print(f"{tool} : Not Installed. Try checking the command")
+            print(colored(f"\n{tool} : Not Installed. Try checking the command","red"))
     except:
-        print(f"Error Installing {tool}")
+        print(colored(f"\nError Installing {tool}"))
 
 
 def git_clone_tool_install(tool):
     try:
-        print(f"Downloading : {tool[0]} \n")
+        print(colored(f"\nDownloading : {tool[0]} \n","green"))
         link = tool[1].strip()
         print(link)
         subprocess.run(["git", "clone", link])
@@ -101,30 +101,33 @@ def git_clone_tool_install(tool):
         result = subprocess.check_output(cmd)
         result_decode = result.decode()
         if result_decode != '':
-            print(f"{tool[0]} : Download Successful")
+            print(colored(f"\n{tool[0]} : Download Successful"))
             print(f"Location : {result_decode}\n")
         else:
-            print(f"{tool[0]} : Download not successful. Check link and try again\n")    
+            print(colored(f"\n{tool[0]} : Download not successful. Check link and try again","red"))  
 
     except:
-        print(f"Error downloading {tool[0]}")
+        print(colored(f"\nError downloading {tool[0]}","red"))
 
 
 
 
 
-print("---------------------------------------------------------------------------------")
-banner = pyfiglet.figlet_format("Tool Checklist :-)")
-print(colored(banner, "green"))
-print(colored("-cyberpands","red"))
-print("---------------------------------------------------------------------------------")
-      
 
 
 while True:
+    print("---------------------------------------------------------------------------------")
+    banner = pyfiglet.figlet_format("Tool Checklist :-)")
+    print(colored(banner, "green"))
+    print(colored("-cyberpands","red"))
+    print("---------------------------------------------------------------------------------")
+      
+
     check_list_1 = print("\n1. Check status and install")
     check_list_3 = print("2. Exit")
-    user_in = input("\nInput: ")  
+    user_in = input("\nInput: ")
+    #print("\n-------------------------------Options-------------------------------\n")
+
     try:
         if(user_in.isnumeric() is not True):
             print("\nOnly Integer Required!!\n")
