@@ -6,3 +6,6 @@ The apt_get_list contains all the tools that can be installed directly with ```s
 
 # Usage 
     python3 check_and_install.py
+
+# Note
+>You can add your tools name in apt_get_list and in git_clone_list you can add main script name and its github link seperated by comma. While running the script remember the keep the two list is the same directory.
