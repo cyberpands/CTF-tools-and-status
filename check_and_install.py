@@ -72,7 +72,7 @@ def git_clone_tool_check(tool_name):
                 print(colored("[+] ","blue") + "Location" + " : " + colored(f"{result_decode}"))
             else:
                 print(colored(f"\n{cmd_to_locate} : Not Found", "red"))
-                #git_clone_tool_install(i)
+                git_clone_tool_install(i)
     except:
         print(colored("\nError in checking files ...","red"))
 
