@@ -1,3 +1,4 @@
+
 import os
 from queue import Empty
 import subprocess
@@ -6,6 +7,7 @@ from termcolor import colored
 import pyfiglet
 import sys
 
+#------------------------------------Function to check apt_get file is present in the current directory--------------------------------#
 
 def apt_get_file_check():
     apt_get_tool_list = []
@@ -24,6 +26,7 @@ def apt_get_file_check():
         sys.exit(1)
     return apt_get_tool_list
 
+#------------------------------------Function to check git_clone file in present in the current directory--------------------------------#
 
 def git_clone_file_check():
     git_clone_tool_list = []
@@ -44,6 +47,7 @@ def git_clone_file_check():
 
     return git_clone_tool_list
 
+#------------------------------------Function to check whether the tools from the list are installed in the system if not then call apt_get_tool_install function--------------------------------#
 
 def apt_get_tool_check(tool_name):
     try:
@@ -57,6 +61,7 @@ def apt_get_tool_check(tool_name):
     except:
         print(colored("\nError Checking status of tools","red"))
 
+#------------------------------------Function to check whether the script from the list is found in the system and if not then call git_clone_tool_install function--------------------------------#
 
 def git_clone_tool_check(tool_name):
     try:
@@ -76,6 +81,7 @@ def git_clone_tool_check(tool_name):
     except:
         print(colored("\nError in checking files ...","red"))
 
+#------------------------------------Function to install the tool and check for its presence onece again--------------------------------#
 
 def apt_get_tool_install(tool):
     try:
@@ -89,30 +95,29 @@ def apt_get_tool_install(tool):
     except:
         print(colored(f"\nError Installing {tool}"))
 
+#------------------------------------Function to install tools using git clone and check for its presence with after updating the system database--------------------------------#
 
 def git_clone_tool_install(tool):
     try:
-        print(colored(f"\nDownloading : {tool[0]} \n","green"))
+        print(colored(f"Downloading : {tool[0]}","green"))
         link = tool[1].strip()
         print(link)
         subprocess.run(["git", "clone", link])
-        subprocess.run(["sudo", "updatedb"])
+        subprocess.run(["sudo", "updatedb"])  #---> used to update the system databse and that helps in locating the recent downloaded files or scripts
         cmd = ["locate", tool[0]]
         result = subprocess.check_output(cmd)
         result_decode = result.decode()
         if result_decode != '':
-            print(colored(f"\n{tool[0]} : Download Successful"))
-            print(f"Location : {result_decode}\n")
+            print(colored("\n[+] ","green") + f"{tool[0]} : " + colored("Download Successful","green"))
+            print(colored("[+] ","blue")  + f"Location : {result_decode}")
         else:
-            print(colored(f"\n{tool[0]} : Download not successful. Check link and try again","red"))  
+            print(colored(colored("\n[+] ","red") + f"{tool[0]} : " + colored("Download not successful. Check link and try again","red")))  
 
     except:
         print(colored(f"\nError downloading {tool[0]}","red"))
 
 
-
-
-
+#------------------------------------Main Function--------------------------------#
 
 
 while True:
@@ -122,11 +127,9 @@ while True:
     print(colored("-cyberpands","red"))
     print("---------------------------------------------------------------------------------")
       
-
     check_list_1 = print("\n1. Check status and install")
     check_list_3 = print("2. Exit")
     user_in = input("\nInput: ")
-    #print("\n-------------------------------Options-------------------------------\n")
 
     try:
         if(user_in.isnumeric() is not True):

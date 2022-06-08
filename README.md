@@ -1,5 +1,8 @@
-# CTF tools and status
- A script to check and install all the relevant tools realting to cybersecurity
+# Description
+    A basic program that checks for all the tools present in the lists and, based on the results, tries to install them along with their location if a particular tool is not found or installed. These are the fundamental tools that can be utilised by a variety of people prior to performing CTFs.
 
- ---
- ### Updating soon ...
+# Working
+    The apt_get_list contains all the tools that can be installed directly with {sudo apt-get -y install tool_name}. While git_clone_list contains the main script name (ex: LinEnum.sh) and its github link.
+
+# Usage 
+```python3 check_and_install.py```
