@@ -1,4 +1,5 @@
-![alt text](/home/sid/Pictures/Screenshots/Screenshot from 2022-06-08 10-02-18.png)
+![image](https://drive.google.com/file/d/1kqyeKA7WR5x91swGqHJyW_wswynTJr6c/view?usp=sharing)
+
 # Description
 A basic program that checks for all the tools present in the lists and, based on the results, tries to install them along with their location if a particular tool is not found or installed. These are the fundamental tools that can be utilised by a variety of people prior to performing CTFs.
 
